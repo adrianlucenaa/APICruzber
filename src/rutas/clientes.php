@@ -97,12 +97,27 @@ $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $res
 //Metodo para actualizar a un cliente
 $app-> put('/clientes/update/{CC}', function (Request $request, Response $response) {
 
-    $CC   = $request->getAttribute('CC');
-    $StCC = (string)$CC;
-    $data = $request->getParsedBody();
-
+    $data   = $request->getParsedBody();
+    $CC     = $request->getAttribute('CC');    
+    $StCC   = (string)$CC;
+    
     $nombre = $data['Nombre'];
 
+    // Verificación de datos
+    if ($data !== null && isset($data['Nombre'])) {
+        $nombre = $data['Nombre'];
+
+        // Resto del código de actualización del cliente...
+
+        $responseBody = json_encode("Se actualizó el cliente correctamente");
+        $response->getBody()->write($responseBody);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    } else {
+        $errorResponse = json_encode(['error' => 'El campo Nombre no se encontró en los datos recibidos']);
+        $response->getBody()->write($errorResponse);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
+    }
+    
     echo "recibo los datos antes de la consulta";
     $sql = "UPDATE Clientes SET 
             Nombre = :nombre 
@@ -119,7 +134,7 @@ $app-> put('/clientes/update/{CC}', function (Request $request, Response $respon
         $resultado->bindParam(':nombre', $nombre);
         echo "Estoy dentro del bindparam";
         $resultado->execute();
-
+        echo "ya eh pasado el bindparam";
         $responseBody = json_encode("Se actualizo el cliente correctamente");
         $response->getBody()->write($responseBody);
         return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
