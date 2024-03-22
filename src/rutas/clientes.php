@@ -9,8 +9,9 @@ $app = AppFactory::create();
 $app->setBasePath('/PruebaAPI/public');
 
 // Metodo get que se traiga a todos los clientes
+/*
 $app->get('/clientes', function (Request $request, Response $response) {
-    $Sql = "SELECT TOP 5 * FROM Clientes";
+    $Sql = "SELECT TOP 1 * FROM Clientes";
     try {
         $db = new db();
         $db = $db->connectDB();
@@ -28,24 +29,39 @@ $app->get('/clientes', function (Request $request, Response $response) {
 
     return $response->withHeader('Content-Type', 'application/json');
 });
- /*
-$app->get('/clientes', function (Request $request, Response $response) {
-   
-    $Sql = "SELECT TOP 1 * FROM Clientes";
+*/
+
+// Metodo post para insertar un nuevo cliente
+$app->post('/clientes/nuevo', function (Request $request, Response $response) {
+
+    $contentType = $request->getHeaderLine('Content-Type');
+    $data =        $request->getParsedBody();   
+
+    $codigoCliente = $data['CodigoCliente'];
+    $nombre        = $data['Nombre'];
+
+    $sql = "INSERT INTO Clientes (CodigoCliente, Nombre) 
+                        VALUES (:codigocliente, :nombre)";
     try {
+        //Conexión a la base de datos
         $db = new db();
         $db = $db->connectDB();
-        $resultado = $db->query($Sql);
-        if ($resultado->rowCount() > 0) {
-            $clientes = $resultado->fetchAll(PDO::FETCH_OBJ);
-            return $response->withJson($clientes);
-        } else {
-            return $response->withJson("No existen clientes en la base de datos");
-        }
-    } catch (PDOException $e) {
-        return $response->withStatus(500)->withJson(['error' => $e->getMessage()]);
-    }
-    
+        $resultado = $db->prepare($sql);
+
+        //Igualo resultado a los datos
+        $resultado->bindParam(':codigocliente', $codigoCliente);
+        $resultado->bindParam(':nombre', $nombre);
+        $resultado->execute();
+
+        $responseBody = json_encode("Se insertó el cliente correctamente");
+        $response->getBody()->write($responseBody);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    } catch(PDOException $e) {
+        $errorResponse = json_encode(['error' => ['text' => $e->getMessage()]]);
+        $response->getBody()->write($errorResponse);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+    } 
 });
-*/
+
+
 $app->run();
