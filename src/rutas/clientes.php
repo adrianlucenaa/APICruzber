@@ -32,6 +32,7 @@ $app->get('/clientes', function (Request $request, Response $response) {
 */
 
 // Metodo post para insertar un nuevo cliente
+/*
 $app->post('/clientes/nuevo', function (Request $request, Response $response) {
 
     $contentType = $request->getHeaderLine('Content-Type');
@@ -62,6 +63,71 @@ $app->post('/clientes/nuevo', function (Request $request, Response $response) {
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     } 
 });
+*/
+//Metodo para eliminar un cliente
+$app-> delete('/clientes/delete/{CC}', function (Request $request, Response $response) {
 
+    $CC = $request->getAttribute('CC');
+    $StCC = (string)$CC;
+    $sql = "DELETE FROM Clientes WHERE CodigoCliente = '$StCC'";
+
+    try {
+        //Conexión a la base de datos
+        $db = new db();
+        $db = $db->connectDB();
+        $resultado = $db->prepare($sql);
+        $resultado-> execute();
+
+        if($resultado->rowCount() > 0) {
+            $responseBody = json_encode("Se elimino el cliente correctamente");
+            $response->getBody()->write($responseBody);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        } else {
+            $responseBody = json_encode("No se elimino el cliente");
+            $response->getBody()->write($responseBody);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+        }
+    } catch(PDOException $e) {
+        $errorResponse = json_encode(['error' => ['text' => $e->getMessage()]]);
+        $response->getBody()->write($errorResponse);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+    }
+});
+
+//Metodo para actualizar a un cliente
+$app-> put('/clientes/update/{CC}', function (Request $request, Response $response) {
+
+    $CC   = $request->getAttribute('CC');
+    $StCC = (string)$CC;
+    $data = $request->getParsedBody();
+
+    $nombre = $data['Nombre'];
+
+    echo "recibo los datos antes de la consulta";
+    $sql = "UPDATE Clientes SET 
+            Nombre = :nombre 
+            WHERE CodigoCliente = '$StCC'";
+
+    try {
+        echo "Estoy dentro del try";
+        //Conexión a la base de datos
+        $db = new db();
+        $db = $db->connectDB();
+        $resultado = $db->prepare($sql);
+
+        //Igualo resultado a los datos
+        $resultado->bindParam(':nombre', $nombre);
+        echo "Estoy dentro del bindparam";
+        $resultado->execute();
+
+        $responseBody = json_encode("Se actualizo el cliente correctamente");
+        $response->getBody()->write($responseBody);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    } catch(PDOException $e) {
+        $errorResponse = json_encode(['error' => ['text' => $e->getMessage()]]);
+        $response->getBody()->write($errorResponse);
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+    }
+});
 
 $app->run();
