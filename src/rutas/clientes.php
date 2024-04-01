@@ -8,8 +8,15 @@ require __DIR__ . '/../config/db.php';
 $app = AppFactory::create();
 $app->setBasePath('/PruebaAPI/public');
 
+
+$app->addBodyParsingMiddleware();
+
+$app->addRoutingMiddleware();
+
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
 // Metodo get que se traiga a todos los clientes
-/*
+
 $app->get('/clientes', function (Request $request, Response $response) {
     $Sql = "SELECT TOP 1 * FROM Clientes";
     try {
@@ -28,10 +35,12 @@ $app->get('/clientes', function (Request $request, Response $response) {
     }
 
     return $response->withHeader('Content-Type', 'application/json');
+
+    
 });
-*/
+
 // Metodo post para insertar un nuevo cliente
-/*
+
 $app->post('/clientes/nuevo', function (Request $request, Response $response) {
 
     $contentType = $request->getHeaderLine('Content-Type');
@@ -62,8 +71,8 @@ $app->post('/clientes/nuevo', function (Request $request, Response $response) {
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     } 
 });
-*/
-/*
+
+
 //Metodo para eliminar un cliente
 $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $response) {
 
@@ -93,18 +102,12 @@ $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $res
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
 });
-*/
+
 //Metodo para actualizar a un cliente
-
-$app->addBodyParsingMiddleware();
-
-$app->addRoutingMiddleware();
-
-$errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 $app->put('/clientes/update/{CC}', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
-    $CC = $request->getAttribute('CC');
+    $CC   = $request->getAttribute('CC');
     $StCC = (string)$CC;
 
     $nombre = $data['Nombre'];
