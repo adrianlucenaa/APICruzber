@@ -2,8 +2,10 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use  App\controllers\ClientesController;
 
 require __DIR__ . '/../config/db.php';
+
 
 $app = AppFactory::create();
 $app->setBasePath('/PruebaAPI/public');
@@ -16,7 +18,8 @@ $app->addRoutingMiddleware();
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
 // Metodo get que se traiga a todos los clientes
-
+$app->get('/clientes', ClientesController::class . ':getAll');
+    /*
 $app->get('/clientes', function (Request $request, Response $response) {
     $Sql = "SELECT TOP 1 * FROM Clientes";
     try {
@@ -38,7 +41,7 @@ $app->get('/clientes', function (Request $request, Response $response) {
 
     
 });
-
+    */
 // Metodo post para insertar un nuevo cliente
 
 $app->post('/clientes/nuevo', function (Request $request, Response $response) {
@@ -104,7 +107,9 @@ $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $res
 });
 
 //Metodo para actualizar a un cliente
+$app->put('/clientes/update/{CC}', ClientesController::class . ':update'); 
 
+/*
 $app->put('/clientes/update/{CC}', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $CC   = $request->getAttribute('CC');
@@ -112,7 +117,7 @@ $app->put('/clientes/update/{CC}', function (Request $request, Response $respons
 
     $nombre = $data['Nombre'];
 
-    echo "El nuevo nombre del cliente es: $nombre";
+    echo "El nuevo nombre del cliente es: $nombre ";
 
     // Verificación de datos
     if ($data !== null && isset($data['Nombre'])) {
@@ -150,5 +155,5 @@ $app->put('/clientes/update/{CC}', function (Request $request, Response $respons
         return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
     }
 });
-
+*/
 $app->run();
