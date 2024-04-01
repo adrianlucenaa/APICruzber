@@ -30,7 +30,6 @@ $app->get('/clientes', function (Request $request, Response $response) {
     return $response->withHeader('Content-Type', 'application/json');
 });
 */
-
 // Metodo post para insertar un nuevo cliente
 /*
 $app->post('/clientes/nuevo', function (Request $request, Response $response) {
@@ -64,6 +63,7 @@ $app->post('/clientes/nuevo', function (Request $request, Response $response) {
     } 
 });
 */
+/*
 //Metodo para eliminar un cliente
 $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $response) {
 
@@ -93,55 +93,58 @@ $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $res
         return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
 });
-
+*/
 //Metodo para actualizar a un cliente
-$app-> put('/clientes/update/{CC}', function (Request $request, Response $response) {
 
-    $data   = $request->getParsedBody();
-    $CC     = $request->getAttribute('CC');    
-    $StCC   = (string)$CC;
-    
+$app->addBodyParsingMiddleware();
+
+$app->addRoutingMiddleware();
+
+$errorMiddleware = $app->addErrorMiddleware(true, true, true);
+
+$app->put('/clientes/update/{CC}', function (Request $request, Response $response) {
+    $data = $request->getParsedBody();
+    $CC = $request->getAttribute('CC');
+    $StCC = (string)$CC;
+
     $nombre = $data['Nombre'];
+
+    echo "El nuevo nombre del cliente es: $nombre";
 
     // Verificación de datos
     if ($data !== null && isset($data['Nombre'])) {
         $nombre = $data['Nombre'];
 
-        // Resto del código de actualización del cliente...
+        // Resto del código de actualización de un cliente
 
-        $responseBody = json_encode("Se actualizó el cliente correctamente");
-        $response->getBody()->write($responseBody);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        $sql = "UPDATE Clientes SET 
+                Nombre = :nombre 
+                WHERE CodigoCliente = '$StCC'";
+
+        try {
+            
+            // Conexión a la base de datos
+            $db = new db();
+            $db = $db->connectDB();
+            $resultado = $db->prepare($sql);
+
+            // Igualo resultado a los datos
+            $resultado->bindParam(':nombre', $nombre);
+            
+            $resultado->execute();
+
+            $responseBody = json_encode("Se actualizó el cliente correctamente");
+            $response->getBody()->write($responseBody);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+        } catch (PDOException $e) {
+            $errorResponse = json_encode(['error' => ['text' => $e->getMessage()]]);
+            $response->getBody()->write($errorResponse);
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+        }
     } else {
         $errorResponse = json_encode(['error' => 'El campo Nombre no se encontró en los datos recibidos']);
         $response->getBody()->write($errorResponse);
         return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
-    }
-    
-    echo "recibo los datos antes de la consulta";
-    $sql = "UPDATE Clientes SET 
-            Nombre = :nombre 
-            WHERE CodigoCliente = '$StCC'";
-
-    try {
-        echo "Estoy dentro del try";
-        //Conexión a la base de datos
-        $db = new db();
-        $db = $db->connectDB();
-        $resultado = $db->prepare($sql);
-
-        //Igualo resultado a los datos
-        $resultado->bindParam(':nombre', $nombre);
-        echo "Estoy dentro del bindparam";
-        $resultado->execute();
-        echo "ya eh pasado el bindparam";
-        $responseBody = json_encode("Se actualizo el cliente correctamente");
-        $response->getBody()->write($responseBody);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-    } catch(PDOException $e) {
-        $errorResponse = json_encode(['error' => ['text' => $e->getMessage()]]);
-        $response->getBody()->write($errorResponse);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
     }
 });
 
