@@ -4,7 +4,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
 use  App\controllers\ClientesController;
 
-require __DIR__ . '/../config/db.php';
+//require __DIR__ . '/../config/db.php';
 
 
 $app = AppFactory::create();
@@ -17,8 +17,8 @@ $app->addRoutingMiddleware();
 
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 
-// Metodo get que se traiga a todos los clientes
-$app->get('/clientes', ClientesController::class . ':getAll');
+//Llamada al  Metodo get que se traiga a todos los clientes
+$app->get('/clientes', ClientesController::class . ':getAll'); //La ruta que va a tomar cuando llamemos a getAll
     /*
 $app->get('/clientes', function (Request $request, Response $response) {
     $Sql = "SELECT TOP 1 * FROM Clientes";
@@ -42,6 +42,7 @@ $app->get('/clientes', function (Request $request, Response $response) {
     
 });
     */
+    /*
 // Metodo post para insertar un nuevo cliente
 
 $app->post('/clientes/nuevo', function (Request $request, Response $response) {
