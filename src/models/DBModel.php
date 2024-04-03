@@ -49,9 +49,9 @@
             $stm = $dbcnx->prepare($sql);                                                           //stmt = statement (consulta)
             $resultados = $stm->execute($params);
 
-            if (stripos($sql, 'UPDATE') !== false || stripos($sql, 'INSERT') !== false) {   //validacion para saber si es una actualización o inserción
-                return $result; // Si es una actualización o inserción, devolver el resultado de la ejecución directamente
-            }
+            if (stripos($sql, 'UPDATE') !== false || stripos($sql, 'INSERT') !== false || stripos($sql, 'DELETE') !== false) {   //validacion para saber si es una actualización o inserción
+                return $resultados; // Si es una actualización , inserción o delete, devolver el resultado de la ejecución directamente,si es una consulta normal, devolver un array de filas
+            }                   // ya que las consultas de actualización e inserción no devuelven un conjunto de resultados como las consultas de selección.
 
             $filas = [];                                                                            //array de filas
                 while ($r = $stm->fetch(PDO::FETCH_ASSOC)) {                                        //while para recorrer las filas
