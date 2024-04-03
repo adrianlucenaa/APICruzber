@@ -16,6 +16,16 @@ class ClientesController {
        ClientesModel::getAll();
 
        die();
+    }
 
+    public function post(Request $request, Response $response) {
+       
+        $data = $request->getParsedBody();
+        $codigoCliente = $data['CodigoCliente'];
+        $nombre = $data['Nombre'];
+
+        ClientesModel::insert($codigoCliente, $nombre);
+
+        die();
     }
 }
