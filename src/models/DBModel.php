@@ -15,15 +15,35 @@
 
         public static function insert($codigoCliente, $nombre){
             
-            $sql = "INSERT INTO " . static::$tabla . " (CodigoCliente, Nombre) VALUES (:CodigoCliente, :Nombre)";
+            $sql = "INSERT INTO " . static::$tabla . " (CodigoCliente, Nombre) VALUES (:CodigoCliente, :Nombre)"; //query para hacer lo deseado con la base de datos
             echo $sql;
-            $params = [
+            $params = [                                   //Parametros que va tener cliente
                 'CodigoCliente' => $codigoCliente,
                 'Nombre' => $nombre
             ];
+            return self::execute($sql, $params);  
+        }
+        /*
+        public static function delete($CC){
+
+            $sql = "DELETE FROM " . static::$tabla . " WHERE CodigoCliente = :CC"; //query para hacer lo deseado con la base de datos
+            echo $sql;
+            $params = [ 
+                'CC' => $CC
+            ];                                  //Parametros que va tener cliente
             return self::execute($sql, $params);
         }
-        
+        */
+
+        public static function delete($CC){
+
+            $sql = "DELETE FROM " . static::$tabla . " WHERE CodigoCliente = :CC"; //query para hacer lo deseado con la base de datos
+            echo $sql;
+            $params = [
+                'CC' => $CC
+            ];
+           return self::execute($sql, $params);
+        }
         protected static function execute ($sql, $params = []) {
             
             $dbcnx = new PDO("sqlsrv:server=localhost;database=Cruzber", "logic", "Sage2009+");     //Conexion por pdo

@@ -22,40 +22,10 @@ $app->get('/clientes', ClientesController::class . ':getAll'); //La ruta que va 
 
 // Metodo post para insertar un nuevo cliente
 $app ->post('/clientes/nuevo', ClientesController::class . ':post');
-/*
-$app->post('/clientes/nuevo', function (Request $request, Response $response) {
 
-    $contentType = $request->getHeaderLine('Content-Type');
-    $data =        $request->getParsedBody();   
-
-    $codigoCliente = $data['CodigoCliente'];
-    $nombre        = $data['Nombre'];
-
-    $sql = "INSERT INTO Clientes (CodigoCliente, Nombre) 
-                        VALUES (:codigocliente, :nombre)";
-    try {
-        //Conexión a la base de datos
-        $db = new db();
-        $db = $db->connectDB();
-        $resultado = $db->prepare($sql);
-
-        //Igualo resultado a los datos
-        $resultado->bindParam(':codigocliente', $codigoCliente);
-        $resultado->bindParam(':nombre', $nombre);
-        $resultado->execute();
-
-        $responseBody = json_encode("Se insertó el cliente correctamente");
-        $response->getBody()->write($responseBody);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-    } catch(PDOException $e) {
-        $errorResponse = json_encode(['error' => ['text' => $e->getMessage()]]);
-        $response->getBody()->write($errorResponse);
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
-    } 
-});
-
-/*
 //Metodo para eliminar un cliente
+$app->delete('/clientes/delete/{CC}', ClientesController::class . ':delete');
+/*
 $app-> delete('/clientes/delete/{CC}', function (Request $request, Response $response) {
 
     $CC = $request->getAttribute('CC');

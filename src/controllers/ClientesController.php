@@ -28,4 +28,23 @@ class ClientesController {
 
         die();
     }
+   
+    public function delete (Request $request, Response $response) {
+        
+        $data = $request->getParsedBody();
+        $CC = isset($data['CodigoCliente']) ? $data['CodigoCliente'] : null;
+
+        if ($CC !== null) {
+            ClientesModel::delete($CC);
+        } else {
+            $response->withStatus(400);
+
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $response->getBody()->write(json_encode(['error' => 'El campo CC no se encontró en los datos recibidos']));
+
+        }
+
+        die();
+    }
+
 }

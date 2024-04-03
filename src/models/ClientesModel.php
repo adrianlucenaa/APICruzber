@@ -15,12 +15,22 @@
         }
 
         public static function insert($codigoCliente, $nombre){
-            echo "Entrando en el método insert de ClientesModel"; // Mensaje de depuración
-            $params = [
+            
+            $params = [                                                   //Parametros que va tener cliente en el metodo insert
                 'CodigoCliente' => $codigoCliente,
                 'Nombre' => $nombre
             ];
-            $resultados = parent::insert($codigoCliente, $nombre);
+            $resultados = parent::insert($codigoCliente, $nombre);         //guardo en la variable resultados, el insert echo en dbmodel
+            var_dump($resultados);                                         //para ver el resultado por pantalla de la variable resultados
+        }
+
+
+        public static function delete($CC){
+            
+            $params = [
+                'CC' => $CC                                                 //Parametros que va tener cliente en el metodo delete
+            ];
+            $resultados = parent::delete($CC);                              //guardo en la variable resultados, el delete echo en dbmodel
             var_dump($resultados);
         }
     }
