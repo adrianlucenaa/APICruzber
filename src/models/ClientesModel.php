@@ -26,11 +26,19 @@
 
 
         public static function delete($CC){
-            
             $params = [
-                'CC' => $CC                                                 //Parametros que va tener cliente en el metodo delete
+                'CodigoCliente' => $CC                                                 //Parametros que va tener cliente en el metodo delete
             ];
             $resultados = parent::delete($CC);                              //guardo en la variable resultados, el delete echo en dbmodel
+            var_dump($resultados);
+        }
+
+        public static function update($CC, $nombre){
+            $params = [
+                'CodigoCliente' => $CC,                                                 //Parametros que va tener cliente en el metodo update
+                'Nombre' => $nombre
+            ];
+            $resultados = parent::update($CC, $nombre);                              //guardo en la variable resultados, el update echo en dbmodel
             var_dump($resultados);
         }
     }
