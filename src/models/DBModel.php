@@ -29,6 +29,7 @@
             $params = [
                 'CodigoCliente' => $CC                        //Parametros que va tener cliente
             ];
+
            return self::execute($sql, $params);               //Devuelvo la salida que me da el execute
         }
 
@@ -46,7 +47,7 @@
             
             $dbcnx = new PDO("sqlsrv:server=localhost;database=Cruzber", "logic", "Sage2009+");     //Conexion por pdo
             $dbcnx->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);                        //para sacar los errores y las excepciones                                                                      //var_dump para ver el resultado por pantalla
-            $stm = $dbcnx->prepare($sql);                                                           //stmt = statement (consulta)
+            $stm = $dbcnx->prepare($sql);                                                           //preparo la consulta
             $resultados = $stm->execute($params);
 
             if (stripos($sql, 'UPDATE') !== false || stripos($sql, 'INSERT') !== false || stripos($sql, 'DELETE') !== false) {   //validacion para saber si es una actualización o inserción
