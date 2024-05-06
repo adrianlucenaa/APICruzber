@@ -20,7 +20,7 @@ class ClientesController {
     }
 
     //Metodo para insertar un nuevo cliente
-    public function post(Request $request, Response $response) {
+    public function insert(Request $request, Response $response) {
        
         $data = $request->getParsedBody();              //Parseamos el body que lleva el post y lo guardamos en data
         $codigoCliente = $data['CodigoCliente'];        //Guardamos el CodigoCliente y nombre en $data
@@ -38,17 +38,19 @@ class ClientesController {
         $CC = isset($data['CodigoCliente']) ? $data['CodigoCliente'] : null;  //Guardamos el CodigoCliente en $data, sino guardamos null
 
         if ($CC !== null) {
-            ClientesModel::delete($CC);
+         ClientesModel::delete($CC);
+            
         } else {                                          //Si no se ha encontrado el CodigoCliente en el body devolvemos el error
-            $response->withStatus(400);
-
-            $response = $response->withHeader('Content-Type', 'application/json');
             $response->getBody()->write(json_encode(['error' => 'El campo CC no se encontró en los datos recibidos']));
+            $response->withStatus(400);
+            $response = $response->withHeader('Content-Type', 'application/json');
+            
 
         }
 
         die();
     }
+
 
     //Metodo para actualizar un cliente por codigo cliente le actulizemos el nombre
     public function update(Request $request, Response $response) {
