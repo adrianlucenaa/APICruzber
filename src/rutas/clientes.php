@@ -20,7 +20,7 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 $app->get('/clientes', ClientesController::class . ':getAll'); //La ruta que va a tomar cuando llamemos a getAll
 
 // Metodo post para insertar un nuevo cliente
-$app ->post('/clientes/nuevo', ClientesController::class . ':post');
+$app->post('/clientes/nuevo', ClientesController::class . ':insert');
 
 //Metodo para eliminar un cliente
 $app->delete('/clientes/delete/{CC}', ClientesController::class . ':delete');
