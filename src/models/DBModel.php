@@ -22,8 +22,8 @@
             return self::execute($sql, $params);  
         }
         
-
-        public static function delete($CC){
+        /*
+        public static function delete($CC, $token){
 
             $sql = "DELETE FROM " . static::$tabla . " WHERE CodigoCliente = :CodigoCliente"; //query para hacer lo deseado con la base de datos
             $params = [
@@ -32,7 +32,28 @@
 
            return self::execute($sql, $params);               //Devuelvo la salida que me da el execute
         }
+        */
+        public static function delete($CC, $token) {
+            
 
+            $url = 'https://localhost:8081/api/clientes/' . $CC;
+        
+            $client = new \GuzzleHttp\Client(['verify' => false]);
+        
+            try {
+                $response = $client->request('DELETE', $url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+        
+                return ['success' => 'Cliente eliminado correctamente'];
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                return ['error' => $e->getMessage()];
+            }
+        }
+        
         public static function update($CC, $nombre){
 
             $sql = "UPDATE " . static::$tabla . " SET Nombre = :Nombre WHERE CodigoCliente = :CodigoCliente"; //query para hacer lo deseado con la base de datos
