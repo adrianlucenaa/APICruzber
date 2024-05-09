@@ -12,31 +12,69 @@
             return self::execute($sql);
         }
 
-        public static function insert($codigoCliente, $nombre){
-            
-            $sql = "INSERT INTO " . static::$tabla . " (CodigoCliente, Nombre) VALUES (:CodigoCliente, :Nombre)"; //query para hacer lo deseado con la base de datos
+        /*
+        public static function insert($CC, $nombre, $token){
+            $url = 'https://localhost:8081/api/clientes/' . $CC . $nombre;
+            //$sql = "INSERT INTO " . static::$tabla . " (CodigoCliente, Nombre) VALUES (:CodigoCliente, :Nombre)"; //query para hacer lo deseado con la base de datos
             $params = [                                        //Parametros que va tener cliente
-                'CodigoCliente' => $codigoCliente,
+                'CodigoCliente' => $CC,
                 'Nombre' => $nombre
             ];
+            
+
+            $client = new \GuzzleHttp\Client(['verify' => false]);
+            try {
+                $response = $client->request('POST', $url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]);
+        
+                return ['success' => 'Cliente eliminado correctamente'];
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                return ['error' => $e->getMessage()];
+            }
             return self::execute($sql, $params);  
         }
-        
+        */
         /*
-        public static function delete($CC, $token){
-
-            $sql = "DELETE FROM " . static::$tabla . " WHERE CodigoCliente = :CodigoCliente"; //query para hacer lo deseado con la base de datos
-            $params = [
-                'CodigoCliente' => $CC                        //Parametros que va tener cliente
+        public static function insert($CC, $nombre, $token){
+            $url = 'https://localhost:8081/api/clientes/'.$CC .$nombre;
+        
+            $client = new \GuzzleHttp\Client(['verify' => false]);
+        
+            $params = [                                        //Parametros que va tener cliente
+                'CodigoCliente' => $CC,
+                'Nombre' => $nombre
             ];
 
-           return self::execute($sql, $params);               //Devuelvo la salida que me da el execute
+            try {
+                $response = $client->request('POST', $url, [
+                    'headers' => [
+                        'Authorization' => 'Bearer ' . $token,
+                        'Content-Type' => 'application/json',
+                    ],
+                    
+                    'json' => $params
+                ]);
+        
+                return ['success' => 'Cliente añadido correctamente'];
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                return ['error' => $e->getMessage()];
+            }
         }
         */
+       /*
         public static function delete($CC, $token) {
             
 
             $url = 'https://localhost:8081/api/clientes/' . $CC;
+
+            $params = [                                        //Parametros que va tener cliente
+                'CodigoCliente' => $CC,
+                'Nombre' => $nombre
+            ];
         
             $client = new \GuzzleHttp\Client(['verify' => false]);
         
@@ -53,7 +91,7 @@
                 return ['error' => $e->getMessage()];
             }
         }
-        
+        */
         public static function update($CC, $nombre){
 
             $sql = "UPDATE " . static::$tabla . " SET Nombre = :Nombre WHERE CodigoCliente = :CodigoCliente"; //query para hacer lo deseado con la base de datos

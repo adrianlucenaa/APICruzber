@@ -26,6 +26,9 @@ $app->post('/clientes/nuevo', ClientesController::class . ':insert');
 $app->delete('/clientes/delete/{CC}', ClientesController::class . ':delete');
 
 //Metodo para actualizar a un cliente
-$app->put('/clientes/update/{CC}', ClientesController::class . ':update'); 
+$app->put('/clientes/update/{CC}', ClientesController::class . ':update');
+
+//Metodo GET por CodigoCliente
+$app->get('/clientes/search/{CC}', ClientesController::class . ':getCC'); 
 
 $app->run();
