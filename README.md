@@ -9,13 +9,12 @@ Base de Datos: SQL Server
 
                                               Instalación y Configuración
 
-Clona este repositorio:
-git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+Clona este repositorio: git clone https://github.com/tu_usuario/nombre_del_repositorio.git
 
 Navega al directorio del proyecto:
 cd APICruzber
-Configura la base de datos en el archivo config.php.
 
+Configura la base de datos en el archivo config.php.
 Importa la base de datos desde el archivo database.sql incluido en el repositorio.
 
 Inicia el servidor PHP:
