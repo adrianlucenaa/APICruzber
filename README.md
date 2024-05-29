@@ -2,9 +2,11 @@
 Este repositorio contiene el código desarrollado durante mis prácticas profesionales en Cruzber. El proyecto consiste en una API,
 creada con PHP que permite realizar un CRUD (Crear, Leer, Actualizar, Eliminar) de clientes, conectándose a una base de datos MySQL.
 
-Tecnologías Utilizadas
-Lenguaje de Programación: PHP 
+                                                  Tecnologías Utilizadas
+Lenguaje de Programación: PHP
+
 Con el Framework : Slim 
+
 Base de Datos: SQL Server
 
                                               Instalación y Configuración
