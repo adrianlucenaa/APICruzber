@@ -10,7 +10,7 @@ Base de Datos: SQL Server
                                               Instalación y Configuración
 
 Clona este repositorio:
-[git clone https://github.com/tu_usuario/nombre_del_repositorio.git](https://github.com/adrianlucenaa/APICruzber.git)
+git clone https://github.com/tu_usuario/nombre_del_repositorio.git
 
 Navega al directorio del proyecto:
 cd APICruzber
@@ -24,10 +24,12 @@ La API estará disponible en http://localhost:8000.
 
                                                 Estructura del Proyecto
 index.php: Punto de entrada de la API.
+
 config.php: Configuración de la base de datos.
+
 cliente.php: Archivo con las funciones para gestionar el CRUD de clientes.
+
 database.sql: Script SQL para crear la base de datos y las tablas necesarias.
-Contribuciones
 
-
+                                                    Contribuciones
 Las contribuciones son bienvenidas. Por favor, abre un issue para discutir cualquier cambio que te gustaría hacer, y se intentara solucionar de la mejor forma posible.
