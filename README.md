@@ -10,7 +10,7 @@ Base de Datos: SQL Server
                                               Instalación y Configuración
 
 Clona este repositorio:
-git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+[git clone https://github.com/tu_usuario/nombre_del_repositorio.git](https://github.com/adrianlucenaa/APICruzber.git)
 
 Navega al directorio del proyecto:
 cd APICruzber
